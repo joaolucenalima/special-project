@@ -1,4 +1,4 @@
-import pool from "../database/database";
+import pool from "@/database/database";
 import { UserData, UserRepositoryInterface } from "./interfaces/user";
 
 export class UserRepository implements UserRepositoryInterface {

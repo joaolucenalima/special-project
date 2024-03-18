@@ -1,8 +1,8 @@
+import { UserRepository } from "@/repositories/user";
+import { GoogleServices } from "@/services/google-login.service";
+import { UserServices } from "@/services/user.service";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
-import { UserRepository } from "../repositories/user";
-import { GoogleServices } from "../services/google-login.service";
-import { UserServices } from "../services/user.service";
 
 const userRepository = new UserRepository();
 const userServices = new UserServices(userRepository);

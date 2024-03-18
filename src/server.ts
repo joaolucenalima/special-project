@@ -1,6 +1,6 @@
+import { UserRoutes } from '@/routes/user';
+import { env } from '@/utils/env';
 import Fastify from 'fastify';
-import { UserRoutes } from './routes/user';
-import { env } from './utils/env';
 
 const fastify = Fastify()
 
