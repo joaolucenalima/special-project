@@ -5,6 +5,10 @@ export class UserServices {
   constructor(private userRepository: UserRepository) { }
 
   async login(userData: UserData) {
-    await this.userRepository.create(userData);
+    const user = await this.userRepository.findByEmail(userData.email);
+
+    if (user.rows.length === 0) {
+      await this.userRepository.create(userData);
+    }
   }
 }
