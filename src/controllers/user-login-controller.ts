@@ -1,4 +1,4 @@
-import { UserRepository } from "@/repositories/user";
+import { UserRepository } from "@/repositories/user-repository";
 import { GoogleServices } from "@/services/google-login.service";
 import { UserServices } from "@/services/user.service";
 import { FastifyReply, FastifyRequest } from "fastify";
