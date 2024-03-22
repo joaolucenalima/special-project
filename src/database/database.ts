@@ -10,14 +10,21 @@ const pool = new pg.Pool({
 
 pool.once('connect', () => {
   console.log(`Database connected in ${URL}`)
-  return pool.query(`
+  pool.query(`
       CREATE TABLE IF NOT EXISTS "user" (
           id uuid DEFAULT gen_random_uuid() UNIQUE NOT NULL,
           email TEXT UNIQUE NOT NULL,
           name TEXT NOT NULL,
           picture TEXT NOT NULL
-      )
-      `)
+      );
+
+      CREATE TABLE IF NOT EXISTS sessions (
+          session_id TEXT PRIMARY KEY,
+          user_id uuid NOT NULL,
+          expire TIMESTAMP(6) NOT NULL,
+          FOREIGN KEY (user_id) REFERENCES "user"(id)
+      );
+  `);
 });
 
 async function connect() {
