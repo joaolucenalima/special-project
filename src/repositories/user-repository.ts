@@ -6,6 +6,7 @@ export class UserRepository implements UserRepositoryInterface {
     return pool.query(`
       INSERT INTO "user"(email, name, picture)
       VALUES($1, $2, $3)
+      RETURNING *
     `, [userData.email, userData.name, userData.picture])
   }
 

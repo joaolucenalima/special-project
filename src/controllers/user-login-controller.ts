@@ -4,7 +4,6 @@ import { UserRepository } from "@/repositories/user-repository";
 import { SessionService } from "@/services/session.service";
 import { UserServices } from "@/services/user.service";
 import { env } from "@/utils/env";
-import { randomUUID } from "crypto";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
@@ -57,7 +56,7 @@ async function userLogin(request: FastifyRequest, reply: FastifyReply) {
 
   try {
     const user_id = await userServices.login(userData)
-    await sessionService.upsertSession({ session_id: randomUUID(), user_id })
+    await sessionService.upsertSession(user_id)
     return reply.redirect("/")
   } catch (err) {
     console.error(err)

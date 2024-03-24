@@ -10,16 +10,16 @@ export class SessionRepository implements SessionRepositoryInterface {
     `, [session.session_id, session.user_id, session.expire])
   }
 
-  async verify(session_id: string) {
+  async findByUserId(user_id: string) {
     return pool.query(`
-      SELECT * FROM sessions WHERE session_id = $1
-    `, [session_id])
+      SELECT * FROM sessions WHERE user_id = $1
+    `, [user_id])
   }
 
   async renew(session_id: string) {
     return pool.query(`
       UPDATE sessions SET expire = NOW() + INTERVAL '30 days' WHERE session_id = $1
-      `, [session_id])
+    `, [session_id])
   }
 
   async delete(session_id: string) {

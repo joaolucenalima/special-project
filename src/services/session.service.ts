@@ -1,22 +1,25 @@
 import { SessionRepository } from "@/repositories/session-repository";
+import { randomUUID } from "crypto";
 
 export class SessionService {
   constructor(private sessionRepository: SessionRepository) { }
 
-  async upsertSession(props: { session_id: string, user_id: string }) {
-    const session = await this.sessionRepository.verify(props.session_id)
+  async upsertSession(user_id: string) {
+    const session = await this.sessionRepository.findByUserId(user_id)
 
     if (session.rows.length === 0) {
+      const session_id = randomUUID()
+
       await this.sessionRepository.create({
-        session_id: props.session_id,
-        user_id: props.user_id,
+        session_id,
+        user_id,
         expire: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30) // 1 month
       })
 
-      return props.session_id
+      return session_id
     }
 
-    await this.sessionRepository.renew(props.session_id)
+    await this.sessionRepository.renew(session.rows[0].session_id)
 
     return session.rows[0].session_id
   }
