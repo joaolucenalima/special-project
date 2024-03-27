@@ -5,7 +5,8 @@
   "main": "src/server.ts",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "start": "tsx watch src/server.ts",
+    "test": "tsx tests/api.test.ts"
   },
   "author": "joaolucenalima",
   "license": "ISC",

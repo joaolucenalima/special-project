@@ -23,4 +23,18 @@ export class SessionService {
 
     return session.rows[0].session_id
   }
+
+  async verifySession(session_id: string) {
+    const session = await this.sessionRepository.findBySessionId(session_id)
+
+    if (session.rows.length === 0) {
+      return null
+    }
+
+    if (session.rows[0].expire < new Date()) {
+      return null
+    }
+
+    return session.rows[0]
+  }
 }

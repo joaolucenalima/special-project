@@ -1,4 +1,4 @@
-import pool from "@/database/database";
+import pool from "@/database/connect";
 import { Session } from "@/database/models/session-model";
 import { SessionRepositoryInterface } from "./interfaces/session";
 
@@ -14,6 +14,12 @@ export class SessionRepository implements SessionRepositoryInterface {
     return pool.query(`
       SELECT * FROM sessions WHERE user_id = $1
     `, [user_id])
+  }
+
+  async findBySessionId(session_id: string) {
+    return pool.query(`
+      SELECT * FROM sessions WHERE session_id = $1
+    `, [session_id])
   }
 
   async renew(session_id: string) {

@@ -24,6 +24,18 @@ pool.once('connect', () => {
           expire TIMESTAMP(6) NOT NULL,
           FOREIGN KEY (user_id) REFERENCES "user"(id)
       );
+
+      CREATE TABLE IF NOT EXISTS task (
+          id uuid DEFAULT gen_random_uuid() UNIQUE NOT NULL,
+          user_id uuid NOT NULL,
+          title TEXT NOT NULL,
+          theme TEXT,
+          description TEXT,
+          status BOOLEAN DEFAULT FALSE NOT NULL,
+          term TIMESTAMP(6),
+          created_at TIMESTAMP(6) DEFAULT now() NOT NULL,
+          FOREIGN KEY (user_id) REFERENCES "user"(id)
+      );
   `);
 });
 
