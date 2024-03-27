@@ -1,10 +1,8 @@
-import { TaskRepository } from "@/repositories/task-repository";
-import { TaskService } from "@/services/task.service";
+import { makeTaskService } from "@/services/factories/make-task-service";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-const taskRepository = new TaskRepository();
-const taskService = new TaskService(taskRepository);
+const taskServices = makeTaskService()
 
 async function addTask(request: FastifyRequest, reply: FastifyReply) {
   const TaskBodySchema = z.object({
@@ -18,7 +16,7 @@ async function addTask(request: FastifyRequest, reply: FastifyReply) {
   const taskData = TaskBodySchema.parse(request.body);
 
   try {
-    const task = await taskService.createTask({
+    const task = await taskServices.createTask({
       user_id: request.user_id,
       title: taskData.title,
       theme: taskData.theme,

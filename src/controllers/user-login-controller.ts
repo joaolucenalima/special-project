@@ -1,8 +1,6 @@
 import { User } from "@/database/models/user-model";
-import { SessionRepository } from "@/repositories/session-repository";
-import { UserRepository } from "@/repositories/user-repository";
-import { SessionService } from "@/services/session.service";
-import { UserServices } from "@/services/user.service";
+import { makeSessionService } from "@/services/factories/make-session-service";
+import { makeUserService } from "@/services/factories/make-user-service";
 import { env } from "@/utils/env";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
@@ -15,11 +13,8 @@ interface GoogleTokensResponse {
   id_token: string;
 }
 
-const userRepository = new UserRepository();
-const userServices = new UserServices(userRepository);
-
-const sessionRepository = new SessionRepository();
-const sessionService = new SessionService(sessionRepository);
+const userServices = makeUserService()
+const sessionService = makeSessionService()
 
 async function userLogin(request: FastifyRequest, reply: FastifyReply) {
   const paramsSchema = z.object({

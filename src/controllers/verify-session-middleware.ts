@@ -1,5 +1,4 @@
-import { SessionRepository } from "@/repositories/session-repository"
-import { SessionService } from "@/services/session.service"
+import { makeSessionService } from "@/services/factories/make-session-service"
 import { FastifyReply, FastifyRequest } from "fastify"
 
 export async function verifySessionMiddleware(
@@ -13,8 +12,7 @@ export async function verifySessionMiddleware(
     return
   }
 
-  const sessionRepository = new SessionRepository()
-  const sessionServices = new SessionService(sessionRepository)
+  const sessionServices = makeSessionService()
 
   const sess = await sessionServices.verifySession(session_id)
 

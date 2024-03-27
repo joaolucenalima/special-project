@@ -9,8 +9,10 @@ interface HttpOptions {
   body?: string
 }
 
+const BASE_URL = "http://localhost:3333"
+
 async function makeRequest(url: string, opts: HttpOptions) {
-  const response = await fetch(url, {
+  const response = await fetch(BASE_URL + url, {
     method: opts.method,
     headers: opts.headers,
     body: opts.body
@@ -19,7 +21,7 @@ async function makeRequest(url: string, opts: HttpOptions) {
   return { status: response.status, data }
 }
 
-describe("api test suite", () => {
+describe("E2E tests", () => {
   let server: FastifyInstance
   before(async () => {
     server = buildServer()
@@ -31,7 +33,7 @@ describe("api test suite", () => {
   })
 
   it("server is running", async () => {
-    const response = await makeRequest("http://localhost:3333", {
+    const response = await makeRequest('/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -41,7 +43,7 @@ describe("api test suite", () => {
     deepEqual(response.data, { message: "Hello World" })
   })
 
-  it("POST /task", async () => {
+  it("POST /task without bearer token", async () => {
     const fakeTask = {
       title: "Task 1",
       user_id: "c5be5b1f-4195-4416-8c2e-7eee15477e89", // random uuid
@@ -49,11 +51,10 @@ describe("api test suite", () => {
       status: false,
     }
 
-    const { status } = await makeRequest("http://localhost:3333/task", {
+    const { status } = await makeRequest("/task", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer 02d0e990-65aa-45c8-adc1-9ef60b91022c`
       },
       body: JSON.stringify(fakeTask)
     })
